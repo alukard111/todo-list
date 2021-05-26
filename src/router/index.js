@@ -8,7 +8,9 @@ const routes = [
   {
     path: '/todolist',
     name: 'TodoList',
-    component: TodoList
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/TodoList.vue')
+    }
   },
   {
     path: '/about',

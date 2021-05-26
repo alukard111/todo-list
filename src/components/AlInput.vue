@@ -1,6 +1,8 @@
 <template>
   <div class="al-input">
     <div class="text-input">
+      {{ getValue }}
+      {{ focusActive }}
       <textarea 
         type="text"
         class="input"
@@ -9,8 +11,6 @@
         id="text-input"
       >
       <!-- computed реализован именно тут. пока не знаю, но нужно это как-то менять...не нравится эстетика -->
-      {{ getValue }}
-      {{ focusActive }}
       
       </textarea>
       
@@ -39,15 +39,18 @@
 
     data: () => ({
       textValue: '',
+      
     }),
     
-   
+    
+    
 
     computed: {
       focusActive() {
-        let getElementForFocus = document.querySelector(`#text-input`)
-        console.log('alInput', this.activeFocus, 'getElem',getElementForFocus)
-        this.focusActiveMethod(getElementForFocus)
+        setTimeout(() => {
+          let getElementForFocus = document.getElementById('text-input')
+          this.focusActiveMethod(getElementForFocus)
+        }, 100)
         
       },
 
@@ -69,9 +72,9 @@
 
       focusActiveMethod(element) {
         if (this.activeFocus) {
-          
-          console.log(element)
-          
+          element.focus()
+        } else {
+          element.blur()
         }
       }
     }

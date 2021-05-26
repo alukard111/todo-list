@@ -2,9 +2,9 @@
 <template>
   <div>
 
-    <div class="relative bottom-80 left-80  z-50">
+    <div class="relative bottom-56 right-32 z-50">
       
-      <div class="text-xs al-calendar bg-green-500 rounded-lg w-80
+      <div class="text-xs al-calendar bg-green-500 rounded-lg w-60
       shadow-2xl absolute "
       v-if="!calendar.monthsDisplayed">
         <div class="month-and-year">
@@ -17,12 +17,12 @@
           <div class="month flex justify-center items-center">
             <button @click="monthDown()">  << </button>
             <p class="text-center cursor-pointer w-24"
-            @click="showMonths()">{{ year.month[calendar.month]}}</p>
+            @click="showMonths()">{{ year.month[Number(calendar.month)]}}</p>
             <button @click="monthUp()">>> </button>
 
           </div>
         </div>
-        <div class="grid grid-cols-7 grid-rows-1 w-80 text-center ">
+        <div class="grid grid-cols-7 grid-rows-1 w-56 text-center ">
 
           <div class=" w-8 h-2  m-2">Пн</div>
           <div class="w-8 h-2  m-2">Вт</div>
@@ -35,14 +35,16 @@
         <div class="
           grid grid-cols-7 
           grid-rows-1 
-          w-80 
+          w-56
           text-center" 
-          v-for="days in monthsDay"
+          v-for="(days, id) in monthsDay"
+          :key="id"    
             >
           <div class="
-          w-8 
-            h-8 
-            m-2  
+          w-6
+            h-6
+            mt-1 
+            mx-3  
           text-white  
             cursor-pointer
             date-class
@@ -51,15 +53,15 @@
             v-for="(item, key) in days"
             :key="key"
             :id="item + '_date'"
-            :class="
-            Number(calendar.today) == item ? 'bg-blue-700' : ''"
-            
+            :class="Number(calendar.today) == item ? 'bg-blue-700' : ''"
             @click="datePicker(item)"
-            
-            
             >
             {{ item }} 
           </div> 
+        </div>
+        <div class="flex flex-row justify-center ">
+          <button type="button" class="m-2 rounded-lg p-3 hover:text-green-900 active:text-blue-700 focus:outline-none " @click="closeCalendar" >   Ok </button>
+          <button type="button" class="m-2 rounded-lg p-3 hover:text-green-900 active:text-blue-700 focus:outline-none " @click="cancelCalendar">Cancel</button>
         </div>
       </div>
       <div class="al-month w-80 "
@@ -70,7 +72,7 @@
         >
           <div class="w-8 h-6   m-2 cursor-pointer"
             v-for="(item, key) in year.month"
-            :key="key"
+            :key="key + item"
             :id="item +'-month'"
             @click="getSelectedMonth(key)">
             {{ item.slice(0,3) }}
@@ -87,7 +89,9 @@
     data: () => ({
       monthsDay: [],
      
-      
+      //счётчик
+      counter: 0,
+
       calendar: {
           year: '',
           month: '',
@@ -124,15 +128,21 @@
     },
 
     mounted() {
+      
       let today = new Date();
       this.calendar.year = today.getFullYear() // устанавливаю год
+      // this.calendar.month = String(today.getMonth() + 1).padStart(2, '0') // устанавливаю месяц
       this.calendar.month = today.getMonth()  // устанавливаю месяц
+      
       this.calendar.today = String(today.getDate()).padStart(2, '0')  // устанавливаем день сегоднешний
       //получаем количество дней в месяце с пробелами
+      console.log(this.calendar.year, this.calendar.month, this.calendar.today)
       this.getDayInMonths()
       
       //получаем список списков дней
       this.getMonthDays()
+
+      console.log(typeof(this.calendar.month))
     },
 
     methods: {
@@ -191,7 +201,9 @@
       checkTodayDate() {
         if (this.calendar.month != new Date().getMonth() || this.calendar.year != new Date().getFullYear()) {
           this.calendar.today = 32
+
         } else {
+          
           this.calendar.today = String(new Date().getDate()).padStart(2, '0') 
         }
       },
@@ -243,9 +255,10 @@
       // выделяет дату и возвращает её в консоль
       datePicker(focusDate) {
         this.dateBlur(focusDate)
+       
         if (focusDate != ' ') {
           // консоль выводит дату по которой кликнули
-          this.$emit('dateCheck', `${focusDate}.${this.calendar.month + 1}.${this.calendar.year}`)
+          this.$emit('dateCheck', `${String(focusDate).length < 2 ? ('0'+String(focusDate)) : focusDate}.${String(this.calendar.month).length < 2 ? ('0'+String(Number(this.calendar.month)+1)) : this.calendar.month}.${this.calendar.year}`)
           let activeDate = document.getElementById(`${focusDate}_date`)
           activeDate.classList.add('bg-red-300')
         }
@@ -289,7 +302,6 @@
         this.calendar.monthsDisplayed = false
         this.getMonthDays() 
         this.checkTodayDate()
-         
       },
 
       yearUp() {
@@ -302,7 +314,19 @@
         this.calendar.year -=1
         this.getMonthDays() 
         this.checkTodayDate()
+      },
+
+      closeCalendar() {
+        this.$emit('closeCalendar', false)
+      },
+
+      cancelCalendar() {
+        this.closeCalendar()
+        this.$emit('cancelCalendar', '')
       }
+
+
+      
       
     }
   }

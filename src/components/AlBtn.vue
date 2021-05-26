@@ -31,14 +31,19 @@
      
     },
 
+    
+
     methods: {
       multiActive() {
+        if (this.btnName == 'Добавить задачу') {
+          this.focusInput()
+        }
         this.sendTask()
         this.cancelInputBtn()
         this.openCalendar()
       },
       sendTask() {
-        this.$emit('helloBtn')
+        this.$emit('sendTask')
       },
 
       cancelInputBtn() {
@@ -47,6 +52,10 @@
 
       openCalendar() {
         this.$emit('openCalendar')
+      },
+
+      focusInput() {
+        this.$emit('focusInput')
       }
 
    }

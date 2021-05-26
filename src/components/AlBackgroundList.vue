@@ -1,57 +1,57 @@
 <template>
-  <div class="box-bg-list
-      
-      ">
+  <div class="box-bg-list">
     <div class="bg-list ">
-      <div
-        class="div-list
-        "
-      > 
+      <div class="div-list"> 
         Сегодня {{ getDateNow }} 
       </div>
-
       <div>Task: {{ numberOfTasks }}</div>
+        
       
       <AlUl 
         :text="text"
         :date="dateCheck"
+        :todayDate="getDateNow"
         @defaultValueState="defaultValueState"
-        @getValueAllTask="numberOfTasks = $event"
+        @getValueTodayTasks="numberOfTasks = $event"
        
       />
+      <div v-if="activeTask" class="">
+        <div class="al-date-btn flex justify-between items-baseline">
+          <button 
+            @click="openCalendar()" 
+            class="border-gray-400 border p-1 rounded-lg w-20 active:bg-gray-400 focus:outline-none"
+            >
+              {{  dateBtn  }} Дата 
+          </button>
+          <p class="flex justify-center" >{{ dateBtn }} {{  dateCheck  }}</p>
+        </div>
+      </div>
       <AlBtnAddTask
         @addTaskActive="addTaskActive"
         v-if="!activeTask"
       />
       <div 
         v-if="activeTask"
-      >
+      > 
         <AlInput
           :valueState="valueState"
           :activeFocus="activeTask"
+          ref="alinput"
           @valueStateDefault="defaultValueState"
           @textValue="text = $event"
-
         />
         <div
-        v-if="calendarIsOpen">
+        v-if="calendarIsOpen"
+        class="flex justify-center">
           <AlCalendar 
-
+          @closeCalendar="calendarIsOpen = $event"
+          @cancelCalendar="dateCheck = $event"
           @dateCheck="dateCheck = $event" />
-          
-        </div>
-        <div class="relative">
-          <div class="al-date-btn absolute left-10">
-            <AlBtn 
-              @openCalendar="openCalendar"
-              :btnName="dateBtn"
-              />
-          </div>
-
         </div>
         <div class="box-al-btn">
           <AlBtn 
-            @helloBtn="returnValue"
+            @focusInput="focusInput"
+            @sendTask="returnValue"
             :btnName="addTask"
           />
           <AlBtn 
@@ -60,7 +60,6 @@
           />
         </div>
       </div>
-      
     </div>
   </div>
 </template>
@@ -92,7 +91,8 @@ import AlCalendar from '@/components/AlCalendar.vue'
       //btn name
       addTask: 'Добавить задачу',
       cancelInput: 'Отмена ввода',
-      dateBtn: '📆'
+      dateBtn: '📆',
+      focus
     }),
 
     computed: {
@@ -106,7 +106,7 @@ import AlCalendar from '@/components/AlCalendar.vue'
       }
     },
     
-// ./src/assets/svg
+
     methods: {
       returnValue() {
         this.closeCalendar()
@@ -119,21 +119,23 @@ import AlCalendar from '@/components/AlCalendar.vue'
           return this.valueState = true
         }
       },
+
       defaultValueState() {
         this.text = ''
         return this.valueState = false
       },
 
       addTaskActive() {
-        
         return this.activeTask = true
+      },
+
+      blurTask() {
+        return this.activeTask = false
       },
       cancelInputBtn() {
         this.closeCalendar()
         this.activeTask = false
-        console.log(this.activeTask)
         return this.activeTask
-
       },
 
       openCalendar() {
@@ -141,13 +143,18 @@ import AlCalendar from '@/components/AlCalendar.vue'
           return this.closeCalendar()
         } else {
           return this.calendarIsOpen = true
-
         }
       },
 
       closeCalendar() {
         return this.calendarIsOpen = false
+      },
+
+      // фокус работает, но обращение к нему крайне изуродованно
+      focusInput() {
+        return this.$refs.alinput.$refs.input.focus()
       }
+      
     }
   }
 

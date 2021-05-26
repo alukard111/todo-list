@@ -1,20 +1,24 @@
 <template>
   <div class="box-ul">
     <div class="ul">
-      <ul class="list">
+      <ul class="list" ref="liRefs">
         {{newTaskLi}}
-        <li v-for="(item, key) in todoList"
+        <!-- v-if условие - для отрисовки сегодняшних задач -->
+        <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
+        <li 
+          v-for="(item, key) in todoList"
+          v-if="item.date == todayDate || item.date == '' "
           :key="key"
           :id="item.number"
           class="todo-task"
+          
           > 
-          <div class="left-setings">
+          <div class="left-setings" >
             <div class="checkbox-li p-value">
               <input 
                 class="checkbox-input"
                 type="checkbox"
                 @click="checkedItem(key)"
-               
                 >
                 <p
                   @keydown.enter="onEnter(item.number)"
@@ -26,27 +30,22 @@
                   v-bind:class=" item.checked ? 'line-through' : ''"
                 >
                 {{ item.value }}
-              </p>
-              
+              </p>             
             </div>
             <div class="">
               <p class="date ">📅{{  item.date  }}</p>
-              
             </div>
           </div>
-            <div class="control-box">
-              
-              <div class="icon-box" 
-                @click.stop="delItem(item.number)">
-                <img class="trash"  src="../assets/svg/trash.svg" alt="удаление">
-              </div>
-              <div class="icon-box">
-                <img class="edit" @click="onInput(item.number)" src="../assets/svg/edit.svg" alt="редактирование">
-              </div>
-
+          <div class="control-box">
+            <div class="icon-box" 
+              @click.stop="delItem(item.number)">
+              <img class="trash"  src="../assets/svg/trash.svg" alt="удаление">
             </div>
+            <div class="icon-box">
+              <img class="edit" @click="onInput(item.number)" src="../assets/svg/edit.svg" alt="редактирование">
+            </div>
+          </div>
         </li>
-        
       </ul>
     </div>
   </div>
@@ -64,6 +63,12 @@
         type: String || Number,
         require: false,
         default: ''
+      },
+
+      todayDate: {
+        type: String || Number,
+        require: false,
+        default: ''
       }
     },
 
@@ -71,6 +76,7 @@
     data: () => ({
       thisElem: '',
       todoList: [],
+      todayTasks: [],
       deleteTodoTask: [],
       todoTask: {
         name: '',
@@ -107,7 +113,10 @@
             // плюсует id 
             this.todoTask.number += 1
             this.$emit('defaultValueState')
-            this.$emit('getValueAllTask', this.todoList.length )
+            // todayTasks = вовзращает массив с совпадениями
+            this.todayTasks = this.todoList.filter(todo => todo.date == this.todayDate || todo.date == '')
+            this.$emit('getValueTodayTasks', todayTasks.length) // пытаюсь получить длинну списка с элементами которые отображаются
+            
           } else {
             alert('нельзя добавить не заполненное ')
           }
@@ -156,14 +165,14 @@
 </script>
 
 
-<style>
+<style lang="scss">
 
 @layer base {
   
   .list {
     @apply
       m-2;
-  },
+  }
 
  
   .todo-task {
@@ -176,19 +185,19 @@
       transition 
       duration-150
       hover:border-red-600;
-  },
+  }
 
   .checkbox-li {
     @apply
       flex
       flex-row-reverse
       justify-end;
-  },
+  }
 
   p {
     @apply
       break-all;
-  },
+  }
   
   p:focus {
     @apply
@@ -200,7 +209,7 @@
       flex-row
       justify-end
      ;
-  },
+  }
 
   .checkbox-input {
     @apply 
@@ -217,7 +226,7 @@
   .date-time-box>p {
     @apply 
       mr-4;
-  },
+  }
 
   .icon-box {
     @apply
@@ -231,7 +240,7 @@
         transition
         duration-150
         hover:bg-gray-800;
-  },
+  }
 
   .date-time-box {
     @apply

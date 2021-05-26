@@ -6,7 +6,7 @@
         
       </div>
     </div>
-    <AlBackgroundList />
+    <AlBackgroundList tasks={todayTasks} />
     
   </div>
 </template>

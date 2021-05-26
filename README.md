@@ -1,6 +1,19 @@
-# todo-list
-In this pet project, I tried to implement the calendar and the to-do list itself. In my free time, I will refine the layout in it and add some functionality to get more experience.
+# justdoit_00
 
-To start the server - npm run serve!
+## Project setup
+```
+npm install
+```
 
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

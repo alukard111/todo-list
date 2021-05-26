@@ -1,14 +1,29 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      
-      <router-link to="/" class="link_text">its '/' page</router-link>
-      <router-link to="/about" class="link_text">About</router-link>
-      <router-link to="/todolist" class="link_text">Todo list</router-link>
+  <div>
+    <div id="menu">
+      <AlMenu />
     </div>
-    <router-view/>
+    <div id="app">
+
+      <div id="nav">
+        <router-link to="/" class="link_text">its '/' page</router-link>
+       
+        <router-link to="/todolist" class="link_text">Todo list</router-link>
+      </div>
+      <router-view/>
+    </div>
+
   </div>
 </template>
+
+<script>
+import AlMenu from '@/components/AlMenu.vue'
+  export default {
+    components: {
+      AlMenu
+    }
+  }
+</script>
 
 <style lang="scss">
 body {
