@@ -2,11 +2,13 @@
   <div id="todo_app_box">
     <div id="title-discription">
       <div id="title-list-co">
-        <h1>TODO List</h1>
+        <h1>Tasks for today</h1>
         
       </div>
     </div>
-    <AlBackgroundList tasks={todayTasks} />
+    <AlBackgroundList 
+    :boardName="boardName"
+    />
     
   </div>
 </template>
@@ -18,7 +20,10 @@ import AlBackgroundList from '@/components/AlBackgroundList.vue'
   export default {
     components: {
       AlBackgroundList
-    }
+    },
+    data: () => ({
+      boardName: 'Today'
+    })
   }
 
 

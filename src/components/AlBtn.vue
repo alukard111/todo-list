@@ -4,7 +4,6 @@
       <button 
         class="btn-add" 
         ref="btn" 
-       
         @click="multiActive()"
         >
         {{ btnName }} 

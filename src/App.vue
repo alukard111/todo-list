@@ -6,9 +6,7 @@
     <div id="app">
 
       <div id="nav">
-        <router-link to="/" class="link_text">its '/' page</router-link>
-       
-        <router-link to="/todolist" class="link_text">Todo list</router-link>
+        
       </div>
       <router-view/>
     </div>

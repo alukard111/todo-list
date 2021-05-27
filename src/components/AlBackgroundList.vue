@@ -11,6 +11,7 @@
         :text="text"
         :date="dateCheck"
         :todayDate="getDateNow"
+        :boardName="boardName"
         @defaultValueState="defaultValueState"
         @getValueTodayTasks="numberOfTasks = $event"
        
@@ -72,6 +73,16 @@ import AlBtnAddTask from '@/components/AlBtnAddTask.vue'
 import AlCalendar from '@/components/AlCalendar.vue'
 
   export default {
+    props: {
+      // Позволяет фильтровать дату 
+
+      boardName: {
+        type: String || Number,
+        require: false,
+        default: ''
+      }
+    },
+
     components: {
       AlInput,
       AlBtn,
@@ -164,7 +175,6 @@ import AlCalendar from '@/components/AlCalendar.vue'
 @layer base {
   .box-bg-list {
     @apply
-       
       m-4
       h-auto
       container

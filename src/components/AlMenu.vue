@@ -16,16 +16,16 @@
           alt="1"/>
       </div>
 
-     
-  
-      <div @click="goToAbout()"
-      :class="this.$route.path == urlAbout ? 'bg-green-600' : '' ">
-        <img style="width: 40%" src="../assets/png/menu-check.png"/>
-      </div>
-      <div>
+      <div @click="goToUpComing()"
+      :class="this.$route.path == urlUpComing ? 'bg-green-600' : '' ">
         <img style="width: 40%" src="../assets/png/menu-next.png"/>
       </div>
-      <div>
+      <div @click="goToAllDay()"
+      :class="this.$route.path == urlAllDayTask ? 'bg-green-600' : '' ">
+        <img style="width: 40%" src="../assets/svg/menu-trash.svg"/>
+      </div>
+      <div @click="goToCheckingTask()"
+      :class="this.$route.path == urlCheckingTask ? 'bg-green-600' : '' ">
         <img style="width: 40%" src="../assets/svg/menu-trash.svg"/>
       </div>
     
@@ -41,7 +41,9 @@
     data: () => ({
       urlAbout: '/about',
       urlToDayList: '/todolist',
-      
+      urlUpComing: '/upcomingtask',
+      urlAllDayTask:'/alldaytask',
+      urlCheckingTask: '/checkingTask',
 
     }),
 
@@ -53,7 +55,19 @@
 
       goToDayList() {
         return this.$router.push({path:`${this.urlToDayList}`})
-      }
+      },
+
+      goToUpComing() {
+        return this.$router.push({path:`${this.urlUpComing}`})
+      },
+
+      goToAllDay() {
+        return this.$router.push({path:`${this.urlAllDayTask}`})
+      },
+
+      goToCheckingTask() {
+        return this.$router.push({path:`${this.urlCheckingTask}`})
+      },
     }
   }
 </script>
@@ -91,7 +105,7 @@
       delay-75;
   }
 
-  .menu>div>img {
+  .menu>div {
     @apply
       transition
       delay-75

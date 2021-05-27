@@ -1,28 +1,27 @@
 <template>
-  <div class="up-coming-task">
-    <p class="titul-list">Challenges ahead</p>
+  <div>
+    <p class="titul-list">All task</p>
     <AlBackgroundList
-      :boardName="boardNames"
+    :boardName="boardName"
     />
   </div>
 </template>
 
 <script>
 import AlBackgroundList from '@/components/AlBackgroundList.vue' 
-
   export default {
     components: {
       AlBackgroundList
     },
 
     data: () => ({
-      boardNames: 'UpComingTask',
+      // for today!
+      boardName: 'AllDayTask',
     })
   }
 </script>
 
 <style>
-        
 @import url('http://fonts.cdnfonts.com/css/the-godfather');
 div>.titul-list {
   font-family: 'The Godfather', sans-serif;
