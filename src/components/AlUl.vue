@@ -159,6 +159,7 @@
         let someTodoTask = {...this.todoList[index]}
         this.deleteTodoTask.push(someTodoTask)
         this.todoList.splice(index, 1)
+        localStorage.setItem("savedDate",JSON.stringify(this.todoList))
         this.$emit('getValueAllTask', this.todoList.length )
       },
 
